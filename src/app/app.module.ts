@@ -6,8 +6,8 @@ import { PersonModule } from './person/person.module';
 import { HobbyModule } from './hobby/hobby.module';
 
 @Module({
-  // "mongodb://localhost:27017/three-in-one-db" is the connection string to the project db
   imports: [
+    // "mongodb://localhost:27017/three-in-one-db" is the connection string to the project db
     MongooseModule.forRoot('mongodb://localhost:27017/three-in-one-db'),
     PersonModule,
     HobbyModule,
