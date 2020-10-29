@@ -1,6 +1,5 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HobbyModule } from './hobby.module';
 
 @Schema()
 export class Hobby {
@@ -12,4 +11,4 @@ export class Hobby {
 
 export type HobbyDocument = Hobby & Document;
 
-export const HobbySchema = SchemaFactory.createForClass(HobbyModule);
+export const HobbySchema = SchemaFactory.createForClass(Hobby);
