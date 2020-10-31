@@ -3,25 +3,44 @@
 I decided to write this blog post after working on a personal project. As I started it, I thought about a way to put in place a solid architecture to create a [GraphQL](https://graphql.org/) API with [NestJs](https://nestjs.com/) and [Mongoose](https://mongoosejs.com/).
 
 > Why GraphQL?
-> // TODO
+>
+> - No more Over- and Underfetching ;
+> - Rapid Product Iterations on the Frontend ;
+> - Insightful Analytics on the Backend ;
+> - Benefits of a Schema & Type System ;
+>
+> -- <cite>[How to GraphQL](https://www.howtographql.com/basics/1-graphql-is-the-better-rest/)</cite>
 
 .
 
 > Why NestJs?
-> // TODO
+>
+> - Nest provides a level of abstraction above these common Node.js frameworks (Express/Fastify) but also exposes their APIs directly to the developer. This allows developers the freedom to use the myriad of third-party modules that are available for the underlying platform.
+>
+> -- <cite>[Filipe Mazzon](https://www.linkedin.com/pulse/nestjs-why-use-filipe-mazzon/)</cite>
 
 .
 
 > Why Mongoose?
-> // TODO
+>
+> - MongooseJS provides an abstraction layer on top of MongoDB that eliminates the need to use named collections.
+> - Models in Mongoose perform the bulk of the work of establishing up default values for document properties and validating data.
+> - Functions may be attached to Models in MongooseJS. This allows for seamless incorporation of new functionality.
+> - Queries use function chaining rather than embedded mnemonics which result in code that is more flexible and readable, therefore more maintainable as well.
+>
+> -- <cite>[Jim Medlock](https://medium.com/chingu/an-overview-of-mongodb-mongoose-b980858a8994#:~:text=The%20three%20main%20advantages%20of,document%20properties%20and%20validating%20data.)</cite>
+
+<hr />
 
 # Problematic
 
 There is a question that always comes up when I start to set up the architecture of a project, it is the definition of the data model and how the different layers of the application will consume it. In my case, the definition of a data model for the different layers of the application gives me some irritation :sweat::
 
 - The definition of a schema for GraphQL to implement the API endpoint;
-- The definition of a schema for mongoose to organize the documents of the database;
+- The definition of a schema for Mongoose to organize the documents of the database;
 - The definition of a data model so that the application map objects;
+
+<hr />
 
 # Solution
 
@@ -34,9 +53,11 @@ NestJS plugins encapsulate different technologies in [_NestJs modules_](https://
 These two plugins allow us to proceed in two ways:
 
 - **schema-first:** first, define the schemas for Mongoose and for GraphQL, then use it to generate our typescript classes.
-- **code-first:** first, define our typescript classes, then use them to generate our schemas `mongoose`/`graphQL`.
+- **code-first:** first, define our typescript classes, then use them to generate our schemas Mongoose/GraphQL.
 
 I used the _code-first_ approach because it allows me to implement a single model (typescript classes) and use it to generate my schemas for GraphQL as well as for Mongoose.
+
+<hr />
 
 # Implementation
 
@@ -841,6 +862,8 @@ export const PersonSchema = SchemaFactory.createForClass(Person);
 This allows us to do request `Person` in this way:
 
 ![Alt Text](https://dev-to-uploads.s3.amazonaws.com/i/9qv3xyoyhwujbokza31l.PNG)
+
+<hr />
 
 # Conclusion
 
