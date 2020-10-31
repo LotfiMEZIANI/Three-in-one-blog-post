@@ -38,7 +38,7 @@ type Mutation {
 
 type Person {
   _id: String!
-  hobbies: [String!]!
+  hobbies(populate: Boolean!): [Hobby!]!
   name: String!
 }
 

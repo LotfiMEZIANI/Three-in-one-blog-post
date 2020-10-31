@@ -1,15 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { Hobby } from '../hobby/hobby.model';
-
 @InputType()
 export class CreatePersonInput {
   @Field(() => String)
   name: string;
 
   @Field(() => [String])
-  hobbies: Hobby[];
+  hobbies: Types.ObjectId[];
 }
 
 @InputType()

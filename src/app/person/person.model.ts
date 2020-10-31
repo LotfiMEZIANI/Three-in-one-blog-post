@@ -8,15 +8,15 @@ import { Hobby } from '../hobby/hobby.model';
 @Schema()
 export class Person {
   @Field(() => String)
-  _id: string;
+  _id: Types.ObjectId;
 
   @Field(() => String)
   @Prop()
   name: string;
 
-  @Field(() => [String])
+  @Field(() => [Hobby])
   @Prop({ type: [Types.ObjectId], ref: Hobby.name })
-  hobbies: Types.ObjectId[];
+  hobbies: Types.ObjectId[] | Hobby[];
 }
 
 export type PersonDocument = Person & Document;

@@ -1,13 +1,21 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { Types } from 'mongoose';
 
-import { Person } from './person.model';
+import { Person, PersonDocument } from './person.model';
 import { PersonService } from './person.service';
 import {
   CreatePersonInput,
   ListPersonInput,
   UpdatePersonInput,
 } from './person.inputs';
+import { Hobby } from '../hobby/hobby.model';
 
 @Resolver(() => Person)
 export class PersonResolver {
@@ -38,5 +46,18 @@ export class PersonResolver {
   @Mutation(() => Person)
   async deletePerson(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
     return this.personService.delete(_id);
+  }
+
+  @ResolveField()
+  async hobbies(
+    @Parent() person: PersonDocument,
+    @Args('populate') populate: boolean,
+  ) {
+    if (populate)
+      await person
+        .populate({ path: 'hobbies', model: Hobby.name })
+        .execPopulate();
+
+    return person.hobbies;
   }
 }
