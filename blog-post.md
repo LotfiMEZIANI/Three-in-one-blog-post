@@ -36,9 +36,9 @@ I decided to write this blog post after working on a personal project. As I star
 
 There is a question that always comes up when I start to set up the architecture of a project, it is the definition of the data model and how the different layers of the application will consume it. In my case, the definition of a data model for the different layers of the application gives me some irritation :sweat::
 
-- The definition of a schema for GraphQL to implement the API endpoint;
-- The definition of a schema for Mongoose to organize the documents of the database;
-- The definition of a data model so that the application map objects;
+- The definition of a schema for GraphQL to implement the API endpoint ;
+- The definition of a schema for Mongoose to organize the documents of the database ;
+- The definition of a data model so that the application map objects ;
 
 <hr />
 
@@ -55,7 +55,7 @@ These two plugins allow us to proceed in two ways:
 - **schema-first:** first, define the schemas for Mongoose and for GraphQL, then use it to generate our typescript classes.
 - **code-first:** first, define our typescript classes, then use them to generate our schemas Mongoose/GraphQL.
 
-I used the _code-first_ approach because it allows me to implement a single model (typescript classes) and use it to generate my schemas for GraphQL as well as for Mongoose.
+I used the _code-first_ approach because it allows me to implement a single model (typescript classes) and use it to generate my schemas for GraphQL as well as for Mongoose :ok_hand:.
 
 <hr />
 
@@ -83,7 +83,7 @@ This will initiate our NestJs project:
 > - **`main.ts`**: the entry point of the NestJS app where we bootstrap it.
 > - **`app.module.ts`**: the root module of the NestJS app. It implemente a `controller` `AppController` and a `provider` `AppService`.
 
-to serve the nest server run :
+To serve the nest server run :
 
 ```shell
 $ npm start
@@ -867,4 +867,4 @@ This allows us to do request `Person` in this way:
 
 # Conclusion
 
-As a developer, we combine different bricks of technologies to set up a viable ecosystem :earth_africa: for our project. In a javascript ecosystem, the advantage (or the disadvantage) is the abundance of brick and the possibility of combination. I hope to still have some motivation to be able to write a sequel to this article which explains the integration of this GraphQL API in a monorepo development environment and thus shares this data model between several applications and libraries.
+As a developer, we combine different bricks of technologies to set up a viable ecosystem :earth_africa: for our project. In a javascript ecosystem, the advantage (or the disadvantage) is the abundance of brick and the possibility of combination. I hope to still have some motivation to be able to write a sequel to this blog post which explains the integration of this GraphQL API in a monorepo development environment and thus shares this data model between several applications and libraries.
