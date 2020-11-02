@@ -32,7 +32,7 @@ I decided to write this blog post after working on a personal project. As I star
 
 <hr />
 
-# Problematic
+# Problem
 
 There is a question that always comes up when I start to set up the architecture of a project, it is the definition of the data model and how the different layers of the application will consume it. In my case, the definition of a data model for the different layers of the application gives me some irritation :sweat::
 
