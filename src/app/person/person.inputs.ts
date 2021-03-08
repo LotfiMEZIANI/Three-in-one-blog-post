@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 @InputType()
 export class CreatePersonInput {
@@ -7,29 +7,29 @@ export class CreatePersonInput {
   name: string;
 
   @Field(() => [String])
-  hobbies: Types.ObjectId[];
+  hobbies: MongooseSchema.Types.ObjectId[];
 }
 
 @InputType()
 export class ListPersonInput {
   @Field(() => String, { nullable: true })
-  _id?: Types.ObjectId;
+  _id?: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;
 
   @Field(() => [String], { nullable: true })
-  hobbies?: Types.ObjectId[];
+  hobbies?: MongooseSchema.Types.ObjectId[];
 }
 
 @InputType()
 export class UpdatePersonInput {
   @Field(() => String)
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;
 
   @Field(() => [String], { nullable: true })
-  hobbies?: Types.ObjectId[];
+  hobbies?: MongooseSchema.Types.ObjectId[];
 }

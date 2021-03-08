@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
@@ -10,7 +10,7 @@ export class CreateHobbyInput {
 @InputType()
 export class ListHobbyInput {
   @Field(() => String, { nullable: true })
-  _id?: Types.ObjectId;
+  _id?: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;
@@ -19,7 +19,7 @@ export class ListHobbyInput {
 @InputType()
 export class UpdateHobbyInput {
   @Field(() => String)
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;

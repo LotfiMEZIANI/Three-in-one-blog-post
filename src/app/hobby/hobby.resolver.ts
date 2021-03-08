@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby } from './hobby.model';
 import { HobbyService } from './hobby.service';
@@ -14,7 +14,7 @@ export class HobbyResolver {
   constructor(private hobbyService: HobbyService) {}
 
   @Query(() => Hobby)
-  async hobby(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async hobby(@Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId) {
     return this.hobbyService.getById(_id);
   }
 
@@ -34,7 +34,7 @@ export class HobbyResolver {
   }
 
   @Mutation(() => Hobby)
-  async deleteHobby(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async deleteHobby(@Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId) {
     return this.hobbyService.delete(_id);
   }
 }

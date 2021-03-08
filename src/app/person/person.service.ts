@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, Schema as MongooseSchema } from 'mongoose';
 
 import { Person, PersonDocument } from './person.model';
 import {
@@ -20,7 +20,7 @@ export class PersonService {
     return createdPerson.save();
   }
 
-  getById(_id: Types.ObjectId) {
+  getById(_id: MongooseSchema.Types.ObjectId) {
     return this.personModel.findById(_id).exec();
   }
 
@@ -34,7 +34,7 @@ export class PersonService {
       .exec();
   }
 
-  delete(_id: Types.ObjectId) {
+  delete(_id: MongooseSchema.Types.ObjectId) {
     return this.personModel.findByIdAndDelete(_id).exec();
   }
 }

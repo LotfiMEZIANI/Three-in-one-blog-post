@@ -6,7 +6,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 import { Person, PersonDocument } from './person.model';
 import { PersonService } from './person.service';
@@ -22,7 +22,7 @@ export class PersonResolver {
   constructor(private personService: PersonService) {}
 
   @Query(() => Person)
-  async person(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async person(@Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId) {
     return this.personService.getById(_id);
   }
 
@@ -44,7 +44,7 @@ export class PersonResolver {
   }
 
   @Mutation(() => Person)
-  async deletePerson(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async deletePerson(@Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId) {
     return this.personService.delete(_id);
   }
 
@@ -58,6 +58,7 @@ export class PersonResolver {
         .populate({ path: 'hobbies', model: Hobby.name })
         .execPopulate();
 
+    console.log(person.hobbies)
     return person.hobbies;
   }
 }

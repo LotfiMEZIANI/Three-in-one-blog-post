@@ -176,13 +176,13 @@ We can now start to set up the generation of mongoose schemas. `@nestjs/mongoose
 // person.model.ts
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby } from '../hobby/hobby.model';
 
 @Schema()
 export class Person {
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Prop()
   name: string;
@@ -199,12 +199,12 @@ export const PersonSchema = SchemaFactory.createForClass(Person);
 ```ts
 // hobby.model.ts
 
-import { Document, Types } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Hobby {
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Prop()
   name: string;
@@ -219,7 +219,7 @@ export const HobbySchema = SchemaFactory.createForClass(Hobby);
 
 - The `@Schema()` decorator marks a class as a schema definition
 - Mongoose documents (ex: `PersonDocument`) represent a one-to-one mapping to documents as stored in MongoDB.
-- `Types.ObjectId` is a mongoose type typically used for unique identifiers
+- `MongooseSchema.Types.ObjectId` is a mongoose type typically used for unique identifiers
 
 And finally, we import the model to MongooseModule in our two modules :
 
@@ -277,7 +277,7 @@ Update services to add CRUD methods and their inputs classes :
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, Schema as MongooseSchema } from 'mongoose';
 
 import { Person, PersonDocument } from './person.model';
 import {
@@ -297,7 +297,7 @@ export class PersonService {
     return createdPerson.save();
   }
 
-  getById(_id: Types.ObjectId) {
+  getById(_id: MongooseSchema.Types.ObjectId) {
     return this.personModel.findById(_id).exec();
   }
 
@@ -311,7 +311,7 @@ export class PersonService {
       .exec();
   }
 
-  delete(_id: Types.ObjectId) {
+  delete(_id: MongooseSchema.Types.ObjectId) {
     return this.personModel.findByIdAndDelete(_id).exec();
   }
 }
@@ -320,7 +320,7 @@ export class PersonService {
 ```ts
 // person.inputs.ts
 
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 import { Hobby } from '../hobby/hobby.model';
 
 export class CreatePersonInput {
@@ -329,13 +329,13 @@ export class CreatePersonInput {
 }
 
 export class ListPersonInput {
-  _id?: Types.ObjectId;
+  _id?: MongooseSchema.Types.ObjectId;
   name?: string;
   hobbies?: Hobby[];
 }
 
 export class UpdatePersonInput {
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
   name?: string;
   hobbies?: Hobby[];
 }
@@ -346,7 +346,7 @@ export class UpdatePersonInput {
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby, HobbyDocument } from './hobby.model';
 import {
@@ -366,7 +366,7 @@ export class HobbyService {
     return createdHobby.save();
   }
 
-  getById(_id: Types.ObjectId) {
+  getById(_id: MongooseSchema.Types.ObjectId) {
     return this.hobbyModel.findById(_id).exec();
   }
 
@@ -380,7 +380,7 @@ export class HobbyService {
       .exec();
   }
 
-  delete(_id: Types.ObjectId) {
+  delete(_id: MongooseSchema.Types.ObjectId) {
     return this.hobbyModel.findByIdAndDelete(_id).exec();
   }
 }
@@ -394,12 +394,12 @@ export class CreateHobbyInput {
 }
 
 export class ListHobbyInput {
-  _id?: Types.ObjectId;
+  _id?: MongooseSchema.Types.ObjectId;
   name?: string;
 }
 
 export class UpdateHobbyInput {
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
   name?: string;
 }
 ```
@@ -410,19 +410,19 @@ Note that the attribute `hobbies` of `Hobby` class is an array of reference to `
 // person.model.ts
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby } from '../hobby/hobby.model';
 
 @Schema()
 export class Person {
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Prop()
   name: string;
 
-  @Prop({ type: [Types.ObjectId], ref: Hobby.name })
-  hobbies: Types.ObjectId[];
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: Hobby.name })
+  hobbies: MongooseSchema.Types.ObjectId[];
 }
 
 export type PersonDocument = Person & Document;
@@ -434,23 +434,23 @@ export const PersonSchema = SchemaFactory.createForClass(Person);
 // person.inputs.ts
 
 import { Hobby } from '../hobby/hobby.model';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 export class CreatePersonInput {
   name: string;
-  hobbies: Types.ObjectId[];
+  hobbies: MongooseSchema.Types.ObjectId[];
 }
 
 export class ListPersonInput {
-  _id?: Types.ObjectId;
+  _id?: MongooseSchema.Types.ObjectId;
   name?: string;
-  hobbies?: Types.ObjectId[];
+  hobbies?: MongooseSchema.Types.ObjectId[];
 }
 
 export class UpdatePersonInput {
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
   name?: string;
-  hobbies?: Types.ObjectId[];
+  hobbies?: MongooseSchema.Types.ObjectId[];
 }
 ```
 
@@ -473,7 +473,7 @@ As for the mongoose, we will use [`decorators`](https://www.typescriptlang.org/d
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Document, Types } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby } from '../hobby/hobby.model';
 
@@ -481,15 +481,15 @@ import { Hobby } from '../hobby/hobby.model';
 @Schema()
 export class Person {
   @Field(() => String)
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
   @Prop()
   name: string;
 
   @Field(() => [String])
-  @Prop({ type: [Types.ObjectId], ref: Hobby.name })
-  hobbies: Types.ObjectId[];
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: Hobby.name })
+  hobbies: MongooseSchema.Types.ObjectId[];
 }
 
 export type PersonDocument = Person & Document;
@@ -502,13 +502,13 @@ export const PersonSchema = SchemaFactory.createForClass(Person);
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @ObjectType()
 @Schema()
 export class Hobby {
   @Field(() => String)
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
   @Prop()
@@ -539,7 +539,7 @@ Then, update the generated files :
 // person.resolver.ts
 
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 import { Person } from './person.model';
 import { PersonService } from './person.service';
@@ -554,7 +554,9 @@ export class PersonResolver {
   constructor(private personService: PersonService) {}
 
   @Query(() => Person)
-  async person(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async person(
+    @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
+  ) {
     return this.personService.getById(_id);
   }
 
@@ -576,7 +578,9 @@ export class PersonResolver {
   }
 
   @Mutation(() => Person)
-  async deletePerson(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async deletePerson(
+    @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
+  ) {
     return this.personService.delete(_id);
   }
 }
@@ -586,7 +590,7 @@ export class PersonResolver {
 // hobby.resolver.ts
 
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby } from './hobby.model';
 import { HobbyService } from './hobby.service';
@@ -601,7 +605,9 @@ export class HobbyResolver {
   constructor(private hobbyService: HobbyService) {}
 
   @Query(() => Hobby)
-  async hobby(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async hobby(
+    @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
+  ) {
     return this.hobbyService.getById(_id);
   }
 
@@ -621,7 +627,9 @@ export class HobbyResolver {
   }
 
   @Mutation(() => Hobby)
-  async deleteHobby(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async deleteHobby(
+    @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
+  ) {
     return this.hobbyService.delete(_id);
   }
 }
@@ -635,7 +643,7 @@ let's add some decorators to inputs classes so that GraphQl recognizes them :
 // person.inputs.ts
 
 import { Field, InputType } from '@nestjs/graphql';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby } from '../hobby/hobby.model';
 
@@ -645,38 +653,38 @@ export class CreatePersonInput {
   name: string;
 
   @Field(() => [String])
-  hobbies: Types.ObjectId[];
+  hobbies: MongooseSchema.Types.ObjectId[];
 }
 
 @InputType()
 export class ListPersonInput {
   @Field(() => String, { nullable: true })
-  _id?: Types.ObjectId;
+  _id?: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;
 
   @Field(() => [String], { nullable: true })
-  hobbies?: Types.ObjectId[];
+  hobbies?: MongooseSchema.Types.ObjectId[];
 }
 
 @InputType()
 export class UpdatePersonInput {
   @Field(() => String)
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;
 
   @Field(() => [String], { nullable: true })
-  hobbies?: Types.ObjectId[];
+  hobbies?: MongooseSchema.Types.ObjectId[];
 }
 ```
 
 ```ts
 // hobby.inputs.ts
 
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
@@ -688,7 +696,7 @@ export class CreateHobbyInput {
 @InputType()
 export class ListHobbyInput {
   @Field(() => String, { nullable: true })
-  _id?: Types.ObjectId;
+  _id?: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;
@@ -697,7 +705,7 @@ export class ListHobbyInput {
 @InputType()
 export class UpdateHobbyInput {
   @Field(() => String)
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, { nullable: true })
   name?: string;
@@ -773,7 +781,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { Types } from 'mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 import { Person, PersonDocument } from './person.model';
 import { PersonService } from './person.service';
@@ -789,7 +797,9 @@ export class PersonResolver {
   constructor(private personService: PersonService) {}
 
   @Query(() => Person)
-  async person(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async person(
+    @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
+  ) {
     return this.personService.getById(_id);
   }
 
@@ -811,7 +821,9 @@ export class PersonResolver {
   }
 
   @Mutation(() => Person)
-  async deletePerson(@Args('_id', { type: () => String }) _id: Types.ObjectId) {
+  async deletePerson(
+    @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
+  ) {
     return this.personService.delete(_id);
   }
 
@@ -835,7 +847,7 @@ export class PersonResolver {
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Document, Types } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { Hobby } from '../hobby/hobby.model';
 
@@ -843,15 +855,15 @@ import { Hobby } from '../hobby/hobby.model';
 @Schema()
 export class Person {
   @Field(() => String)
-  _id: Types.ObjectId;
+  _id: MongooseSchema.Types.ObjectId;
 
   @Field(() => String)
   @Prop()
   name: string;
 
   @Field(() => [Hobby])
-  @Prop({ type: [Types.ObjectId], ref: Hobby.name })
-  hobbies: Types.ObjectId[] | Hobby[];
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: Hobby.name })
+  hobbies: MongooseSchema.Types.ObjectId[] | Hobby[];
 }
 
 export type PersonDocument = Person & Document;
